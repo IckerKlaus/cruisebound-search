@@ -7,6 +7,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { Sailing } from '@/types/sailing';
 import SailingCard from './SailingCard';
 import PaginationControls from './PaginationControls';
+import SortDropdown from './SortDropdown';
 
 export default function PaginatedResults({ sailings }: { sailings: Sailing[] }) {
   const itemsPerPage = 10; // Number of results per page
@@ -87,17 +88,7 @@ export default function PaginatedResults({ sailings }: { sailings: Sailing[] }) 
 
         <div className="text-sm text-black flex items-center gap-2">
           <span className="font-medium">Sort by</span>
-          <select
-            value={sortOption}
-            onChange={(e) => handleSortChange(e.target.value)}
-            className="border border-gray-300 px-3 py-1 rounded shadow-sm focus:outline-none text-sm">
-            <option value="price-asc">Price – Lowest first</option>
-            <option value="price-desc">Price – Highest first</option>
-            <option value="date-asc">Departure Date – Soonest first</option>
-            <option value="date-desc">Departure Date – Latest first</option>
-            <option value="duration-asc">Duration – Shortest first</option>
-            <option value="duration-desc">Duration – Longest first</option>
-          </select>
+          <SortDropdown value={sortOption} onChange={handleSortChange} />
         </div>
       </div>
 
