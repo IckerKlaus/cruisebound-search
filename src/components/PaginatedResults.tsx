@@ -1,45 +1,50 @@
-'use client';
+'use client'; // For using React hooks in a client component
 
+// To manage URL and page navigation
 import { useEffect, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
+
 import { Sailing } from '@/types/sailing';
 import SailingCard from './SailingCard';
 import PaginationControls from './PaginationControls';
 
 export default function PaginatedResults({ sailings }: { sailings: Sailing[] }) {
-  const itemsPerPage = 10;
-  const searchParams = useSearchParams();
+  const itemsPerPage = 10; // Number of results per page
+  const searchParams = useSearchParams(); // Detect current page from URL query params
   const router = useRouter();
 
   const pageFromURL = parseInt(searchParams.get('page') || '1', 10);
   const [currentPage, setCurrentPage] = useState(pageFromURL);
   const [sortOption, setSortOption] = useState('price-asc');
 
+  // Ensure the UI reflects changes in the URL
   useEffect(() => {
     setCurrentPage(pageFromURL);
   }, [pageFromURL]);
 
+  // Updates the URL when the user navigates between pages
   const handlePageChange = (page: number) => {
     const params = new URLSearchParams(searchParams);
     params.set('page', page.toString());
     router.push(`/?${params.toString()}`);
   };
 
+  // Changes the sorting option and resets to page 1
   const handleSortChange = (value: string) => {
     setSortOption(value);
-    setCurrentPage(1); // reset to page 1
+    setCurrentPage(1);
     const params = new URLSearchParams(searchParams);
     params.set('page', '1');
     router.push(`/?${params.toString()}`);
   };
 
   const handleResetFilters = () => {
-  setSortOption('price-asc');
-  setCurrentPage(1);
-  router.push('/');
+    setSortOption('price-asc');
+    setCurrentPage(1);
+    router.push('/');
   };
 
-
+  // Sort sailings based on price, date, or duration depending on sortOption
   const sortedSailings = [...sailings].sort((a, b) => {
     switch (sortOption) {
       case 'price-asc':
@@ -60,6 +65,8 @@ export default function PaginatedResults({ sailings }: { sailings: Sailing[] }) 
   });
 
   const totalPages = Math.ceil(sortedSailings.length / itemsPerPage);
+  
+  // Applies actual pagination by slicing the sorted array
   const currentSailings = sortedSailings.slice(
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
@@ -73,8 +80,7 @@ export default function PaginatedResults({ sailings }: { sailings: Sailing[] }) 
           <h1 className="text-2xl text-black font-semibold">{sailings.length} trips found</h1>
           <button
             onClick={handleResetFilters}
-            className="text-sm text-black px-3 py-1 border border-gray-400 rounded hover:bg-gray-100"
-          >
+            className="text-sm text-black px-3 py-1 border border-gray-400 rounded hover:bg-gray-100">
             Reset filters
           </button>
         </div>
@@ -84,8 +90,7 @@ export default function PaginatedResults({ sailings }: { sailings: Sailing[] }) 
           <select
             value={sortOption}
             onChange={(e) => handleSortChange(e.target.value)}
-            className="border border-gray-300 px-3 py-1 rounded shadow-sm focus:outline-none text-sm"
-          >
+            className="border border-gray-300 px-3 py-1 rounded shadow-sm focus:outline-none text-sm">
             <option value="price-asc">Price – Lowest first</option>
             <option value="price-desc">Price – Highest first</option>
             <option value="date-asc">Departure Date – Soonest first</option>
@@ -99,7 +104,7 @@ export default function PaginatedResults({ sailings }: { sailings: Sailing[] }) 
       {/* Results */}
       <div className="space-y-6">
         {currentSailings.map((sailing, index) => (
-          <SailingCard key={index} sailing={sailing} />
+          <SailingCard key={index} sailing={sailing} /> 
         ))}
       </div>
 
@@ -107,8 +112,7 @@ export default function PaginatedResults({ sailings }: { sailings: Sailing[] }) 
       <PaginationControls
         currentPage={currentPage}
         totalPages={totalPages}
-        onPageChange={handlePageChange}
-      />
+        onPageChange={handlePageChange}/>
     </div>
   );
 }

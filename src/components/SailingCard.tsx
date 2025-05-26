@@ -1,10 +1,10 @@
-// src/components/SailingCard.tsx
-'use client';
+'use client'; // For using React hooks in a client component
 
 import Image from 'next/image';
 import { Sailing } from '@/types/sailing';
 import { formatDateRange } from '@/utils/format';
 
+// Component that displays the information of a sailing cruise
 export default function SailingCard({ sailing }: { sailing: Sailing }) {
   return (
     <div className="rounded-xl overflow-hidden shadow border flex flex-col md:flex-row bg-white">
