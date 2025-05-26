@@ -1,5 +1,7 @@
-/* This component allows reusing the pagination control 
-   in any other list in the project */
+/* 
+This component allows reusing the pagination control 
+in any other list in the project 
+*/
 
 'use client'; // For using React hooks in a client component
 

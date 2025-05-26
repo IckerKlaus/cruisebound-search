@@ -1,3 +1,4 @@
+// Represents the structure of a sailing cruise trip object returned by the API
 export type Sailing = {
   price: number;
   name: string;
